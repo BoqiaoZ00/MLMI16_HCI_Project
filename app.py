@@ -18,7 +18,7 @@ def _default_results_path() -> Path:
 
 RESULTS_PATH = Path(os.environ.get("RESULTS_PATH", str(_default_results_path())))
 SHEET_ID = os.environ.get("GOOGLE_SHEET_ID")
-SHEET_NAME = os.environ.get("GOOGLE_SHEET_NAME", "Sheet1")
+SHEET_NAME = os.environ.get("GOOGLE_SHEET_NAME")
 SERVICE_ACCOUNT_JSON = os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON")
 
 
@@ -30,7 +30,11 @@ def _append_to_google_sheet(row: list[str]) -> None:
     scopes = ["https://www.googleapis.com/auth/spreadsheets"]
     credentials = Credentials.from_service_account_info(creds_info, scopes=scopes)
     client = gspread.authorize(credentials)
-    worksheet = client.open_by_key(SHEET_ID).worksheet(SHEET_NAME)
+    spreadsheet = client.open_by_key(SHEET_ID)
+    if SHEET_NAME:
+        worksheet = spreadsheet.worksheet(SHEET_NAME)
+    else:
+        worksheet = spreadsheet.get_worksheet(0)
     worksheet.append_row(row, value_input_option="RAW")
 
 app = Flask(__name__, static_folder=str(APP_DIR / "static"), template_folder=str(APP_DIR / "templates"))
@@ -69,7 +73,9 @@ def record() -> object:
             with RESULTS_PATH.open("a", encoding="utf-8") as handle:
                 handle.write(line)
     except (OSError, RuntimeError, ValueError, gspread.exceptions.GSpreadException) as exc:
-        return jsonify({"error": f"Failed to record results: {exc}"}), 500
+        error_type = type(exc).__name__
+        message = f"Failed to record results ({error_type}): {exc}"
+        return jsonify({"error": message}), 500
 
     return jsonify({"status": "ok"})
 
