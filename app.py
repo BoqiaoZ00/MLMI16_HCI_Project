@@ -1,12 +1,19 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import os
 from pathlib import Path
 
 from flask import Flask, jsonify, request, send_from_directory
 
 APP_DIR = Path(__file__).resolve().parent
-RESULTS_PATH = Path("/Users/permanj/Desktop/MLMI 16 HCI/project/test_results.txt")
+def _default_results_path() -> Path:
+    if os.environ.get("VERCEL") or os.environ.get("VERCEL_ENV"):
+        return Path("/tmp/test_results.txt")
+    return APP_DIR / "test_results.txt"
+
+
+RESULTS_PATH = Path(os.environ.get("RESULTS_PATH", str(_default_results_path())))
 
 app = Flask(__name__, static_folder=str(APP_DIR / "static"), template_folder=str(APP_DIR / "templates"))
 
@@ -33,11 +40,12 @@ def record() -> object:
 
     now_iso = datetime.now(timezone.utc).isoformat()
     line = f"{now_iso}\tstart={start_iso}\tend={end_iso}\telapsed_ms={elapsed_ms:.0f}\n"
-    RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
-    RESULTS_PATH.write_text(
-        RESULTS_PATH.read_text(encoding="utf-8") + line if RESULTS_PATH.exists() else line,
-        encoding="utf-8",
-    )
+    try:
+        RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with RESULTS_PATH.open("a", encoding="utf-8") as handle:
+            handle.write(line)
+    except OSError as exc:
+        return jsonify({"error": f"Failed to write results: {exc}"}), 500
 
     return jsonify({"status": "ok"})
 
