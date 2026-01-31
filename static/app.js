@@ -29,8 +29,17 @@ const postElapsed = async (startIso, endIso, elapsedMs) => {
   });
 
   if (!response.ok) {
-    const data = await response.json().catch(() => ({}));
-    throw new Error(data.error || "Failed to record result.");
+    const text = await response.text().catch(() => "");
+    let message = "Failed to record result.";
+    if (text) {
+      try {
+        const data = JSON.parse(text);
+        message = data.error || text;
+      } catch {
+        message = text;
+      }
+    }
+    throw new Error(message);
   }
 };
 
@@ -62,17 +71,18 @@ const handleClick = async () => {
   const endIso = new Date().toISOString();
   const elapsedMs = Date.parse(endIso) - Date.parse(existingStartIso);
 
-  try {
-    await postElapsed(existingStartIso, endIso, elapsedMs);
-    statusEl.textContent = `Recorded ${formatElapsed(elapsedMs)} to test_results.txt.`;
-  } catch (error) {
-    setError(error.message);
-    return;
-  } finally {
-    clearStart();
-  }
-
+  // Optimistic UI: reset immediately, then report outcome when the write completes.
+  clearStart();
   updateUiForReady();
+  statusEl.textContent = `Saving ${formatElapsed(elapsedMs)}...`;
+
+  postElapsed(existingStartIso, endIso, elapsedMs)
+    .then(() => {
+      statusEl.textContent = `Saved ${formatElapsed(elapsedMs)}.`;
+    })
+    .catch((error) => {
+      setError(error.message);
+    });
 };
 
 button.addEventListener("click", () => {

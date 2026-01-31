@@ -19,7 +19,9 @@ def _default_results_path() -> Path:
 RESULTS_PATH = Path(os.environ.get("RESULTS_PATH", str(_default_results_path())))
 SHEET_ID = os.environ.get("GOOGLE_SHEET_ID")
 SHEET_NAME = os.environ.get("GOOGLE_SHEET_NAME")
+SHEET_GID = os.environ.get("GOOGLE_SHEET_GID")
 SERVICE_ACCOUNT_JSON = os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON")
+DISABLE_LOCAL_FILE = os.environ.get("DISABLE_LOCAL_FILE", "0") == "1"
 
 
 def _append_to_google_sheet(row: list[str]) -> None:
@@ -31,7 +33,9 @@ def _append_to_google_sheet(row: list[str]) -> None:
     credentials = Credentials.from_service_account_info(creds_info, scopes=scopes)
     client = gspread.authorize(credentials)
     spreadsheet = client.open_by_key(SHEET_ID)
-    if SHEET_NAME:
+    if SHEET_GID:
+        worksheet = spreadsheet.get_worksheet_by_id(int(SHEET_GID))
+    elif SHEET_NAME:
         worksheet = spreadsheet.worksheet(SHEET_NAME)
     else:
         worksheet = spreadsheet.get_worksheet(0)
@@ -65,6 +69,8 @@ def record() -> object:
     try:
         if SHEET_ID and SERVICE_ACCOUNT_JSON:
             _append_to_google_sheet(row)
+        elif DISABLE_LOCAL_FILE:
+            raise RuntimeError("Local file logging disabled; missing Google Sheets config.")
         else:
             line = (
                 f"{now_iso}\tstart={start_iso}\tend={end_iso}\telapsed_ms={elapsed_ms:.0f}\n"
