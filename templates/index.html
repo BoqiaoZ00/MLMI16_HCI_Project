@@ -3,15 +3,121 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Simple Timer Logger</title>
+    <title>Typing Experiment</title>
     <link rel="stylesheet" href="/static/styles.css">
   </head>
   <body>
     <main class="container">
-      <h1>Simple Timer Logger</h1>
-      <p class="status" id="status">Ready. Click the button to start.</p>
-      <button id="timerButton" class="primary">Start timer</button>
-      <p class="hint">Second click records elapsed time to test_results.txt.</p>
+      <header class="page-header">
+        <h1>Typing Experiment</h1>
+        <p id="pageCounter" class="page-counter">Page 1 of 12</p>
+      </header>
+
+      <section class="page" id="page-consent">
+        <h2>Consent and Instructions</h2>
+        <p class="lead">
+          Please review the participant information sheet and confirm each statement below before continuing.
+        </p>
+
+        <div class="details-panel">
+          <button id="toggleInfoSheet" class="secondary" type="button">See the details</button>
+          <div id="infoSheet" class="info-sheet hidden">
+            <iframe
+              title="Participant Information Sheet"
+              src="/assets/participant-info.pdf"
+            ></iframe>
+            <p class="hint">
+              If the document does not load, open it
+              <a href="/assets/participant-info.pdf" target="_blank" rel="noreferrer">in a new tab</a>.
+            </p>
+          </div>
+        </div>
+
+        <div class="checkbox-list">
+          <label><input type="checkbox" class="consent-check"> I confirm that I have read and understand the Participant Information Sheet.</label>
+          <label><input type="checkbox" class="consent-check"> I have had the opportunity to ask questions and have had these answered satisfactorily.</label>
+          <label><input type="checkbox" class="consent-check"> I understand that my participation is voluntary and that I am free to withdraw at any time without giving a reason.</label>
+          <label><input type="checkbox" class="consent-check"> I understand that my typing interactions (including keystrokes and timing information) will be recorded for research purposes.</label>
+          <label><input type="checkbox" class="consent-check"> I agree that data gathered in this study may be stored anonymously and securely, and may be used for future research.</label>
+          <label><input type="checkbox" class="consent-check"> I agree to take part in this study.</label>
+        </div>
+
+        <label class="field">
+          Participation mode
+          <select id="participationMode">
+            <option value="remote">Remote</option>
+            <option value="in-person">In-person</option>
+          </select>
+        </label>
+
+        <button id="consentContinue" class="primary" disabled>Continue</button>
+        <p id="participantIdLabel" class="hint hidden"></p>
+      </section>
+
+      <section class="page hidden" id="page-typing">
+        <div class="block-info">
+          <h2 id="phaseLabel">Practice Session</h2>
+          <p id="blockMeta" class="hint"></p>
+        </div>
+
+        <div class="phrase-panel" id="phrasePanel">
+          <span id="completionIndicator" class="completion-indicator hidden">✓ Completed</span>
+          <p class="label">Target phrase</p>
+          <p id="targetPhrase" class="target-phrase"></p>
+          <p id="phraseCounter" class="hint"></p>
+        </div>
+
+        <label class="label" for="typingInput">Type here</label>
+        <div
+          id="typingInput"
+          class="typing-input"
+          role="textbox"
+          aria-multiline="false"
+          contenteditable="true"
+          spellcheck="false"
+        ></div>
+
+        <div class="suggestion-bar" id="suggestionBar">
+          <span class="suggestion" id="suggestion1">Holder_1</span>
+          <span class="suggestion" id="suggestion2">Holder_2</span>
+          <span class="suggestion" id="suggestion3">Holder_3</span>
+        </div>
+
+        <p class="hint">Press 1, 2, or 3 to accept a suggestion.</p>
+
+        <p id="status" class="status"></p>
+
+        <div class="controls">
+          <button id="nextPhraseBtn" class="primary" disabled>Next phrase</button>
+          <button id="nextBlockBtn" class="primary hidden">Continue</button>
+        </div>
+      </section>
+
+      <section class="page hidden" id="page-questionnaire">
+        <h2>Post-Experiment Questionnaire</h2>
+        <p class="hint">Rate each item from 1 (Very Low Effort) to 7 (Very High Effort).</p>
+
+        <div class="question">
+          <p>1. Effort required to notice suggestions.</p>
+          <div class="likert" data-question="perceptual_effort"></div>
+        </div>
+        <div class="question">
+          <p>2. Effort required to verify suggestion correctness.</p>
+          <div class="likert" data-question="cognitive_evaluation"></div>
+        </div>
+        <div class="question">
+          <p>3. Effort required to decide whether to accept suggestions.</p>
+          <div class="likert" data-question="decision_effort"></div>
+        </div>
+
+        <button id="submitQuestionnaire" class="primary" disabled>Submit</button>
+        <p id="questionnaireStatus" class="status"></p>
+      </section>
+
+      <section class="page hidden" id="page-thankyou">
+        <h2>Thank you!</h2>
+        <p>Your responses have been recorded.</p>
+      </section>
     </main>
     <script src="/static/app.js"></script>
   </body>

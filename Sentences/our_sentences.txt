@@ -1,0 +1,35 @@
+Accuracy 0.1 | Delay 0 ms   : My watch fell in the water during an unexpected thunderstorm downtown today.
+Accuracy 0.1 | Delay 0 ms   : Prevailing winds from the east delayed the environmental research expedition offshore.
+Accuracy 0.1 | Delay 0 ms   : Never too rich and never too thin describes a difficult ethical dilemma.
+
+Accuracy 0.1 | Delay 100 ms : Breathing is difficult when humidity fluctuates and the temperature drops quickly.
+Accuracy 0.1 | Delay 100 ms : I can see the rings on Saturn through the observatory telescope clearly.
+Accuracy 0.1 | Delay 100 ms : Physics and chemistry are hard when foundational concepts remain poorly understood.
+
+Accuracy 0.1 | Delay 200 ms : My bank account is overdrawn after the expensive international conference registration.
+Accuracy 0.1 | Delay 200 ms : Elections bring out the best and worst in public discourse sometimes.
+Accuracy 0.1 | Delay 200 ms : We are having spaghetti tonight because the cafeteria menu changed unexpectedly.
+
+Accuracy 0.5 | Delay 0 ms   : Time to go shopping before the neighborhood market closes unusually early today.
+Accuracy 0.5 | Delay 0 ms   : A problem with the engine caused a mechanical inspection to be delayed.
+Accuracy 0.5 | Delay 0 ms   : Elephants are afraid of mice, despite their impressive physical stature.
+
+Accuracy 0.5 | Delay 100 ms : My favorite place to visit features historical architecture and tranquil gardens.
+Accuracy 0.5 | Delay 100 ms : Three two one zero blast off echoes throughout the mission control auditorium.
+Accuracy 0.5 | Delay 100 ms : My favorite subject is psychology because cognition fascinates me deeply.
+
+Accuracy 0.5 | Delay 200 ms : Circumstances are unacceptable when safety protocols are ignored repeatedly.
+Accuracy 0.5 | Delay 200 ms : Watch out for low flying objects during the annual airshow demonstration.
+Accuracy 0.5 | Delay 200 ms : If at first you do not succeed, reconsider the methodology and retry.
+
+Accuracy 0.9 | Delay 0 ms   : Please provide your date of birth for accurate demographic classification purposes.
+Accuracy 0.9 | Delay 0 ms   : We run the risk of failure if coordination and planning are inadequate.
+Accuracy 0.9 | Delay 0 ms   : Prayer in schools offends some and inspires others, depending on perspective.
+
+Accuracy 0.9 | Delay 100 ms : He is just like everyone else, yet his perseverance remains exceptional.
+Accuracy 0.9 | Delay 100 ms : Great disturbance in the force unsettled the entire research community.
+Accuracy 0.9 | Delay 100 ms : Love means many things and often resists precise linguistic definition.
+
+Accuracy 0.9 | Delay 200 ms : You must be getting old if nostalgia suddenly feels overwhelmingly vivid.
+Accuracy 0.9 | Delay 200 ms : The world is a stage where ambition and integrity compete for attention.
+Accuracy 0.9 | Delay 200 ms : Can I skate with sister today, or should I finish homework first.
