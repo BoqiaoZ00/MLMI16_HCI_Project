@@ -191,6 +191,14 @@ def _append_csv(participant_id: str, dataset: str, row: dict[str, object]) -> No
 app = Flask(__name__, static_folder=str(APP_DIR / "static"), template_folder=str(APP_DIR / "templates"))
 
 
+@app.after_request
+def _disable_api_cache(response):
+    if request.path.startswith("/api/"):
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+    return response
+
+
 @app.get("/")
 def index() -> object:
     return send_from_directory(app.template_folder, "index.html")

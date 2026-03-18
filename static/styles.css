@@ -133,10 +133,26 @@ h2 {
 }
 
 .block-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 16px;
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.block-info .phase-label {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 8px;
+}
+
+.block-info .block-meta {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #475569;
+  margin: 0;
 }
 
 .phrase-panel {

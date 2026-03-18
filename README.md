@@ -13,12 +13,18 @@ cd MLMI16_HCI_Project
 
 ### 2. Set up Conda environment
 
+Create a **fresh** environment (avoids conflicts with other packages like wfdb):
+
 ```bash
 conda create -n mlmi16_hci python=3.11
 conda activate mlmi16_hci
 ```
 
+Python 3.10 or 3.11 works.
+
 ### 3. Install dependencies
+
+With the conda environment activated:
 
 ```bash
 pip install -r requirements.txt
@@ -51,3 +57,7 @@ python Data_Visualization/visualize.py "Data_Recorded"
 ```
 
 Outputs are saved to `Data_Visualization/output/`.
+
+## Troubleshooting
+
+If `pip install -r requirements.txt` fails with dependency conflicts (e.g. involving wfdb or scipy), use a fresh conda environment as above. Do not install into an environment that already has many packages.

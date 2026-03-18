@@ -80,7 +80,9 @@ const fetchSuggestionBlock = async (blockIndex) => {
   if (SUGGESTION_BLOCKS[blockIndex]) {
     return SUGGESTION_BLOCKS[blockIndex];
   }
-  const response = await fetch(`/api/suggestions/${blockIndex + 1}`);
+  const response = await fetch(`/api/suggestions/${blockIndex + 1}`, {
+    cache: "no-store",
+  });
   if (!response.ok) {
     throw new Error("Failed to load suggestion block.");
   }
@@ -95,7 +97,9 @@ const fetchPracticeBlocks = async () => {
   if (PRACTICE_BLOCKS.length) {
     return PRACTICE_BLOCKS;
   }
-  const response = await fetch("/api/suggestions/practice");
+  const response = await fetch("/api/suggestions/practice", {
+    cache: "no-store",
+  });
   if (!response.ok) {
     return PRACTICE_BLOCKS;
   }
@@ -221,10 +225,11 @@ const getCurrentTargetPhrase = () => {
   }
   const block = SUGGESTION_BLOCKS[state.blockIndex];
   const phrase = block?.phrases?.[state.phraseIndex];
-  if (phrase?.sentence) {
-    return phrase.sentence;
+  let result = phrase?.sentence || MAIN_PHRASES[state.blockIndex];
+  if (PRACTICE_PHRASES.includes(result)) {
+    result = MAIN_PHRASES[state.blockIndex];
   }
-  return MAIN_PHRASES[state.blockIndex];
+  return result;
 };
 
 const getTargetWords = () => getCurrentTargetPhrase().split(" ");
@@ -486,6 +491,8 @@ const updateBlockMeta = () => {
 };
 
 const loadPhrase = async () => {
+  resetTypingState();
+  targetPhraseEl.textContent = "";
   if (state.phase === "main") {
     typingInput.setAttribute("contenteditable", "false");
     setStatus("Loading suggestions...");
@@ -546,6 +553,11 @@ const loadPhrase = async () => {
   resetTypingState();
   state.phraseStartMs = null;
   updateTypingFeedback();
+  requestAnimationFrame(() => {
+    state.typedValue = "";
+    setTypedValue("");
+    typingInput.textContent = "";
+  });
 };
 
 const finishPhrase = (endTimestamp) => {
