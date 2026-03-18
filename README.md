@@ -24,10 +24,10 @@ Python 3.10 or 3.11 works.
 
 ### 3. Install dependencies
 
-With the conda environment activated:
+With the conda environment activated, use `python -m pip` so packages install into the conda env (not system Python):
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ## Running the experiment
@@ -60,4 +60,5 @@ Outputs are saved to `Data_Visualization/output/`.
 
 ## Troubleshooting
 
-If `pip install -r requirements.txt` fails with dependency conflicts (e.g. involving wfdb or scipy), use a fresh conda environment as above. Do not install into an environment that already has many packages.
+- **ModuleNotFoundError (e.g. flask)**: Use `python -m pip install -r requirements.txt` instead of `pip install` so packages install into the conda env’s Python.
+- **Dependency conflicts (wfdb, scipy)**: Use a fresh conda environment as above.
